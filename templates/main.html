@@ -10,19 +10,19 @@
                 <h1 class="title">PDF generator</h1>
 
                 <div class="header"> Training name </div>
-                <textarea name="training_name" class="training_name" placeholder="Training"></textarea>
+                <textarea name="training_name" required class="training_name" placeholder="Training"></textarea>
 
                 <div class="header"> Trainer name </div>
-                <input type="text" class="input" name="trainer_name" placeholder="Trainer"/>
+                <input type="text" class="input" name="trainer_name" required="required" placeholder="Trainer"/>
 
                 <div class="header"> Date </div>
-                <input type="text" class="input" name="training_date" placeholder="Date"/>
+                <input type="text" class="input" name="training_date" required="required" placeholder="Date"/>
 
                 <div class="header"> Place </div>
-                <input type="text" class="input" name="training_place" placeholder="Place"/>
+                <input type="text" class="input" name="training_place" required="required" placeholder="Place"/>
 
                 <div class="header"> Participants (one per line) </div>
-                <textarea name="participants" class="participants" placeholder="Participants"></textarea>
+                <textarea name="participants" required class="participants" placeholder="Participants"></textarea>
 
                 <button type="submit" class="generate_button">Generate</button>
             </div>
