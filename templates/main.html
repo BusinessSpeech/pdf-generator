@@ -1,42 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>PDF Generator for Business Speech</title>
+        <link rel="stylesheet" href="static/index.css">
     </head>
     <body>
-        <div>HELLO THERE</div>
         <form action="/generate" method="post">
-            <div>
-                <label>
-                    Training name
-                    <textarea name="training_name" placeholder="Training"></textarea>
-                </label>
+            <div class="wrapper">
+                <h1 class="title">PDF generator</h1>
+
+                <div class="header"> Training name </div>
+                <textarea name="training_name" class="training_name" placeholder="Training"></textarea>
+
+                <div class="header"> Trainer name </div>
+                <input type="text" class="input" name="trainer_name" placeholder="Trainer"/>
+
+                <div class="header"> Date </div>
+                <input type="text" class="input" name="training_date" placeholder="Date"/>
+
+                <div class="header"> Place </div>
+                <input type="text" class="input" name="training_place" placeholder="Place"/>
+
+                <div class="header"> Participants (one per line) </div>
+                <textarea name="participants" class="participants" placeholder="Participants"></textarea>
+
+                <button type="submit" class="generate_button">Generate</button>
             </div>
-            <div>
-                <label>
-                    Trainer name
-                    <input type="text" name="trainer_name" placeholder="Trainer"/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Place
-                    <input type="text" name="training_place" placeholder="Place"/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Date
-                    <input type="text" name="training_date" placeholder="Date"/>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Participants (one per line)
-                    <textarea name="participants" placeholder="Participants"></textarea>
-                </label>
-            </div>
-            <input type="submit" name="Generate">
         </form>
     </body>
 </html>

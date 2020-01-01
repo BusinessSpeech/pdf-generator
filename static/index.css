@@ -1,0 +1,52 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    width: 600px;
+}
+
+.title {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    justify-self: center;
+}
+
+.training_name {
+    width: 400px;
+    height: 80px;
+    display: block;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    resize: none;
+}
+
+.participants {
+    width: 400px;
+    height: 300px;
+    display: block;
+    grid-column-start: 2;
+    grid-column-end: 2;
+    resize: vertical;
+}
+
+.header {
+    justify-self: end;
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+.input {
+    width: 400px;
+    display: block;
+    grid-column-start: 2;
+    grid-column-end: 2;
+}
+
+.generate_button {
+    width: 100px;
+    justify-self: center;
+    height: 22px;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
