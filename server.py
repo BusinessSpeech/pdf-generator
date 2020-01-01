@@ -1,9 +1,8 @@
-import os
+import io
 
-from pdf_writer import create_pdf
-from zip_creation import create_zip
-from flask import Flask, url_for, render_template, request, send_file
-from temp_dir_util import create_temp_dir, delete_temp_dir
+from flask import Flask, render_template, request, send_file
+from pdf_writer import create_multipage_pdf
+
 app = Flask(__name__, template_folder='templates/')
 
 
@@ -20,13 +19,11 @@ def generate():
     training_place = request.form['training_place']
     participants = request.form['participants']
     participants_list = [p.strip() for p in participants.split('\n') if p.strip() != '']
-    print(len(participants_list))
-    temp_dir_name = create_temp_dir()
-    for participant in participants_list:
-        filename = participant.replace(' ', '_')
-        create_pdf(os.path.join(temp_dir_name, '{}.pdf'.format(filename)), participant, trainer_name, training_name,
-                   training_date, training_place)
-    zip_file_name = create_zip(temp_dir_name)
+    print('Generating PDF for `{}`, {} participants'
+          .format(training_name.replace('\n', ' ').replace('\r', ''), len(participants_list)))
+
+    buffer = io.BytesIO()
+    create_multipage_pdf(buffer, participants_list, trainer_name, training_name, training_date, training_place)
     formatted_date = training_date.replace(' ', '_')
-    delete_temp_dir(temp_dir_name)
-    return send_file(zip_file_name, 'application/zip', True, 'Тренинг-{}.zip'.format(formatted_date))
+    buffer.seek(0)
+    return send_file(buffer, 'application/pdf', True, 'Тренинг-{}.pdf'.format(formatted_date))
