@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PDF Generator for Business Speech</title>
+    </head>
+    <body>
+        <div>HELLO THERE</div>
+        <form action="/generate" method="post">
+            <div>
+                <label>
+                    Training name
+                    <textarea name="training_name" placeholder="Training"></textarea>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Trainer name
+                    <input type="text" name="trainer_name" placeholder="Trainer"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Place
+                    <input type="text" name="training_place" placeholder="Place"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Date
+                    <input type="text" name="training_date" placeholder="Date"/>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Participants (one per line)
+                    <textarea name="participants" placeholder="Participants"></textarea>
+                </label>
+            </div>
+            <input type="submit" name="Generate">
+        </form>
+    </body>
+</html>
