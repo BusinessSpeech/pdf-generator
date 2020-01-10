@@ -3,23 +3,33 @@ blue_color_r=61
 blue_color_g=189
 blue_color_b=237
 supplementary_font_size=14
-supplementary_first_line_y=275
-supplementary_second_line_y=340
+supplementary_first_line_y=567
+supplementary_second_line_y=502
 
 trainee_font_size=24
-trainee_line_y=311
+trainee_line_y=531
 
 training_font_size=18
-training_mid_y=419
+training_mid_y=423
 training_line_height=30
 
 training_place_date_font_size=11
-training_place_date_y=700
+training_place_date_y=142
 training_place_date_line_height=22
 
 trainer_font_size=11
 trainer_line_x=96
-trainer_line_y=567
+trainer_line_y=275
 trainer_line_height=22
 trainer_signature_line_gap=8
 trainer_signature_line_length=102
+
+quote_y=404
+quote_width=41
+quote_height=49
+left_quote_x=72
+right_quote_x=482
+
+logo_y=712
+logo_width=162
+logo_height=19
