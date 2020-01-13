@@ -24,12 +24,9 @@ trainer_line_height=22
 trainer_signature_line_gap=8
 trainer_signature_line_length=102
 
-quote_y=404
-quote_width=41
-quote_height=49
+quote_y=408
 left_quote_x=72
 right_quote_x=482
 
 logo_y=712
 logo_width=162
-logo_height=19

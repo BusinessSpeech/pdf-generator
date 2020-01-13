@@ -1,8 +1,10 @@
 import reportlab.rl_config
-from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen.canvas import Canvas
+from svglib.svglib import svg2rlg
+
 from config import config
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
@@ -38,21 +40,28 @@ def create_pdf(filename, trainee_name, trainer_name, training_name, date, place)
 
 
 def draw_quotes(c, pdf_config):
+    """
+    Width and height of svg images are hardcoded inside images themselves
+    """
     quote_y = int(pdf_config['quote_y'])
     right_quote_x = int(pdf_config['right_quote_x'])
     left_quote_x = int(pdf_config['left_quote_x'])
-    quote_width = int(pdf_config['quote_width'])
-    quote_height = int(pdf_config['quote_height'])
-    c.drawImage("./quote-right.png", right_quote_x, quote_y, quote_width, quote_height, mask='auto')
-    c.drawImage("./quote-left.png", left_quote_x, quote_y, quote_width, quote_height, mask='auto')
+    quote_l = svg2rlg('./quote_l.svg')
+    quote_r = svg2rlg('./quote_r.svg')
+    quote_l.drawOn(c, left_quote_x, quote_y)
+    quote_r.drawOn(c, right_quote_x, quote_y)
 
 
 def draw_logo(c, pdf_config, mid_width):
-    logo_height = int(pdf_config['logo_height'])
+    """
+    Width and height of svg are hardcoded inside svg itself
+    However, logo width is used to center the image so it's also written in the config
+    """
     logo_width = int(pdf_config['logo_width'])
     logo_y = int(pdf_config['logo_y'])
     logo_x = int(mid_width - logo_width / 2)
-    c.drawImage("./logo.png", logo_x, logo_y, logo_width, logo_height, mask='auto')
+    d = svg2rlg('./logo.svg')
+    d.drawOn(c, logo_x, logo_y)
 
 
 def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place):
