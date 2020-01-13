@@ -18,7 +18,7 @@ def generate():
     training_date = request.form['training_date']
     training_place = request.form['training_place']
     participants = request.form['participants']
-    participants_list = [p.strip() for p in participants.split('\n') if p.strip() != '']
+    participants_list = [p.strip() for p in participants.split('\n')]
     print('Generating PDF for `{}`, {} participants'
           .format(training_name.replace('\n', ' ').replace('\r', ''), len(participants_list)))
 
