@@ -16,7 +16,6 @@ FONT_NAME = 'OsnovaPro'
 FONT_NAME_LIGHT = 'OsnovaProLight'
 
 pdfmetrics.registerFont(TTFont(FONT_NAME, 'OsnovaPro.ttf'))
-pdfmetrics.registerFont(TTFont(FONT_NAME_LIGHT, 'OsnovaProLight.ttf'))
 
 
 def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place):
@@ -82,7 +81,7 @@ def print_supplementary_text(c, pdf_config, mid_width):
     first_line_y = int(pdf_config['supplementary_first_line_y'])
     second_line_y = int(pdf_config['supplementary_second_line_y'])
 
-    c.setFont(FONT_NAME_LIGHT, font_size)
+    c.setFont(FONT_NAME, font_size)
     c.setFillColorRGB(r / 256, g / 256, b / 256)
     c.drawCentredString(mid_width, first_line_y, 'подтверждает, что')
     c.drawCentredString(mid_width, second_line_y, 'прошёл (-ла) обучение на тренинге')
@@ -129,7 +128,7 @@ def print_trainer_name(c, pdf_config, trainer_name):
     signature_line_gap = int(pdf_config['trainer_signature_line_gap'])
     signature_line_length = int(pdf_config['trainer_signature_line_length'])
 
-    c.setFont(FONT_NAME_LIGHT, font_size)
+    c.setFont(FONT_NAME, font_size)
     c.drawString(left, top, 'Бизнес-тренер:')
     second_line_y = top - line_height
     t = c.beginText(left, second_line_y)
