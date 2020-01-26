@@ -18,12 +18,12 @@ FONT_NAME_LIGHT = 'OsnovaProLight'
 pdfmetrics.registerFont(TTFont(FONT_NAME, 'OsnovaPro.ttf'))
 
 
-def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place):
+def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place, quotes_offset):
     pdf_config = config['pdf'] if 'pdf' in config else dict()
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:
-        create_page(c, pdf_config, mid_width, participant, training_name, trainer_name, date, place)
+        create_page(c, pdf_config, mid_width, participant, training_name, trainer_name, date, place, quotes_offset)
         c.showPage()
 
     c.save()
@@ -33,12 +33,12 @@ def create_pdf(filename, trainee_name, trainer_name, training_name, date, place)
     pdf_config = config['pdf'] if 'pdf' in config else dict()
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=0)
-    create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place)
+    create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place, quotes_offset=0)
 
     c.save()
 
 
-def draw_quotes(c, pdf_config):
+def draw_quotes(c, pdf_config, quotes_offset):
     """
     Width and height of svg images are hardcoded inside images themselves
     """
@@ -47,8 +47,8 @@ def draw_quotes(c, pdf_config):
     left_quote_x = int(pdf_config['left_quote_x'])
     quote_l = svg2rlg('./quote_l.svg')
     quote_r = svg2rlg('./quote_r.svg')
-    quote_l.drawOn(c, left_quote_x, quote_y)
-    quote_r.drawOn(c, right_quote_x, quote_y)
+    quote_l.drawOn(c, left_quote_x + quotes_offset, quote_y)
+    quote_r.drawOn(c, right_quote_x - quotes_offset, quote_y)
 
 
 def draw_logo(c, pdf_config, mid_width):
@@ -63,14 +63,14 @@ def draw_logo(c, pdf_config, mid_width):
     d.drawOn(c, logo_x, logo_y)
 
 
-def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place):
+def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place, quotes_offset):
     print_supplementary_text(c, pdf_config, mid_width)
     print_trainee_name(c, pdf_config, mid_width, trainee_name)
     print_training_title(c, pdf_config, mid_width, training_name)
     print_date_and_place(c, pdf_config, mid_width, date, place)
     print_trainer_name(c, pdf_config, trainer_name)
     draw_logo(c, pdf_config, mid_width)
-    draw_quotes(c, pdf_config)
+    draw_quotes(c, pdf_config, quotes_offset)
 
 
 def print_supplementary_text(c, pdf_config, mid_width):

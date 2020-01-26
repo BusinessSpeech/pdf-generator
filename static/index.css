@@ -15,6 +15,7 @@
 .training_name {
     width: 400px;
     height: 80px;
+    box-sizing: border-box;
     display: block;
     grid-column-start: 2;
     grid-column-end: 2;
@@ -23,7 +24,8 @@
 
 .participants {
     width: 400px;
-    height: 300px;
+    height: 280px;
+    box-sizing: border-box;
     display: block;
     grid-column-start: 2;
     grid-column-end: 2;
@@ -38,6 +40,7 @@
 
 .input {
     width: 400px;
+    box-sizing: border-box;
     display: block;
     grid-column-start: 2;
     grid-column-end: 2;
