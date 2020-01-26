@@ -104,7 +104,7 @@ def print_training_title(c, pdf_config, mid_width, training_title):
     c.setFont(FONT_NAME, font_size)
     c.setFillColorRGB(0.0, 0.0, 0.0)
     training_name_lines = [l.strip() for l in training_title.split('\n') if l.strip() != '']
-    start_top = text_mid_y + (len(training_name_lines) - 1) / 2 * line_height  # TODO: +
+    start_top = text_mid_y + (len(training_name_lines) - 1) / 2 * line_height
     line_top = start_top
     for line in training_name_lines:
         c.drawCentredString(mid_width, line_top, line)
