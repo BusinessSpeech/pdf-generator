@@ -13,7 +13,7 @@ print(A4)
 
 FONT_NAME = 'OsnovaPro'
 
-pdfmetrics.registerFont(TTFont(FONT_NAME, 'OsnovaPro.ttf'))
+pdfmetrics.registerFont(TTFont(FONT_NAME, './fonts/OsnovaPro.ttf'))
 
 
 def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place, quotes_offset):
@@ -34,8 +34,8 @@ def draw_quotes(c, pdf_config, quotes_offset):
     quote_y = int(pdf_config['quote_y'])
     right_quote_x = int(pdf_config['right_quote_x'])
     left_quote_x = int(pdf_config['left_quote_x'])
-    quote_l = svg2rlg('./quote_l.svg')
-    quote_r = svg2rlg('./quote_r.svg')
+    quote_l = svg2rlg('./images/quote_l.svg')
+    quote_r = svg2rlg('./images/quote_r.svg')
     quote_l.drawOn(c, left_quote_x + quotes_offset, quote_y)
     quote_r.drawOn(c, right_quote_x - quotes_offset, quote_y)
 
@@ -48,7 +48,7 @@ def draw_logo(c, pdf_config, mid_width):
     logo_width = int(pdf_config['logo_width'])
     logo_y = int(pdf_config['logo_y'])
     logo_x = int(mid_width - logo_width / 2)
-    d = svg2rlg('./logo.svg')
+    d = svg2rlg('./images/logo.svg')
     d.drawOn(c, logo_x, logo_y)
 
 

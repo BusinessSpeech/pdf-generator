@@ -6,7 +6,10 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY *.py *.ttf *.svg *.txt ./
+COPY python python
+COPY fonts fonts
+COPY images images
+COPY config.txt .
 
 COPY templates templates
 
@@ -14,4 +17,4 @@ COPY static static
 
 EXPOSE 5050:5050
 
-CMD python runner.py
+CMD python python/runner.py

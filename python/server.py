@@ -3,7 +3,7 @@ import io
 from flask import Flask, render_template, request, send_file
 from pdf_writer import create_multipage_pdf
 
-app = Flask(__name__, template_folder='templates/')
+app = Flask(__name__, template_folder='../templates/', static_url_path='/static', static_folder='../static')
 
 
 @app.route('/')
