@@ -16,12 +16,12 @@ FONT_NAME = 'OsnovaPro'
 pdfmetrics.registerFont(TTFont(FONT_NAME, './fonts/OsnovaPro.ttf'))
 
 
-def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place, quotes_offset):
+def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place, quotes_offset, training_type):
     pdf_config = config['pdf'] if 'pdf' in config else dict()
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:
-        create_page(c, pdf_config, mid_width, participant, training_name, trainer_name, date, place, quotes_offset)
+        create_page(c, pdf_config, mid_width, participant, training_name, trainer_name, date, place, quotes_offset, training_type)
         c.showPage()
 
     c.save()
@@ -52,8 +52,8 @@ def draw_logo(c, pdf_config, mid_width):
     d.drawOn(c, logo_x, logo_y)
 
 
-def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place, quotes_offset):
-    print_supplementary_text(c, pdf_config, mid_width)
+def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place, quotes_offset, training_type):
+    print_supplementary_text(c, pdf_config, mid_width, training_type)
     print_trainee_name(c, pdf_config, mid_width, trainee_name)
     print_training_title(c, pdf_config, mid_width, training_name)
     print_date_and_place(c, pdf_config, mid_width, date, place)
@@ -62,18 +62,19 @@ def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_n
     draw_quotes(c, pdf_config, quotes_offset)
 
 
-def print_supplementary_text(c, pdf_config, mid_width):
+def print_supplementary_text(c, pdf_config, mid_width, training_type):
     r = int(pdf_config['blue_color_r'])
     g = int(pdf_config['blue_color_g'])
     b = int(pdf_config['blue_color_b'])
     font_size = int(pdf_config['supplementary_font_size'])
     first_line_y = int(pdf_config['supplementary_first_line_y'])
     second_line_y = int(pdf_config['supplementary_second_line_y'])
+    training_type_text = 'прошёл(-ла) тренинг' if training_type == 'training' else 'прошёл(-ла) мастер-класс'
 
     c.setFont(FONT_NAME, font_size)
     c.setFillColorRGB(r / 256, g / 256, b / 256)
     c.drawCentredString(mid_width, first_line_y, 'подтверждает, что')
-    c.drawCentredString(mid_width, second_line_y, 'прошёл (-ла) обучение на тренинге')
+    c.drawCentredString(mid_width, second_line_y, training_type_text)
 
 
 def print_trainee_name(c, pdf_config, mid_width, trainee_name):

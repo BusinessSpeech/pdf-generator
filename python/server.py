@@ -25,6 +25,7 @@ def generate():
     training_date = request.form['training_date']
     training_place = request.form['training_place']
     quotes_offset = parse_int(request.form['quotes_offset'], 0)
+    training_type = request.form['training_type']
     participants = request.form['participants']
     participants_list = [p.strip() for p in participants.split('\n')]
     print('Generating PDF for `{}`, {} participants'
@@ -32,7 +33,7 @@ def generate():
 
     buffer = io.BytesIO()
     create_multipage_pdf(
-        buffer, participants_list, trainer_name, training_name, training_date, training_place, quotes_offset)
+        buffer, participants_list, trainer_name, training_name, training_date, training_place, quotes_offset, training_type)
     formatted_date = training_date.replace(' ', '_')
     buffer.seek(0)
     return send_file(buffer, 'application/pdf', True, 'Тренинг-{}-{}.pdf'.format(formatted_date, trainer_name))
