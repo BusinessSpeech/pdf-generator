@@ -1,4 +1,4 @@
-FROM python:3.7.5-slim
+FROM python:3.9.5-slim
 
 WORKDIR /usr/local/pdf-creator
 
