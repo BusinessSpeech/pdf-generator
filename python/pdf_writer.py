@@ -17,7 +17,7 @@ pdfmetrics.registerFont(TTFont(FONT_NAME, './fonts/OsnovaPro.ttf'))
 
 
 def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place, quotes_offset, training_type):
-    pdf_config = config['pdf'] if 'pdf' in config else dict()
+    pdf_config = config['default'] if 'default' in config else dict()
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:

@@ -1,4 +1,4 @@
-[pdf]
+[default]
 blue_color_r=61
 blue_color_g=189
 blue_color_b=237
