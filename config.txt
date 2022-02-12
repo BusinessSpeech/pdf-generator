@@ -17,6 +17,8 @@ training_place_date_font_size=11
 training_place_date_y=142
 training_place_date_line_height=22
 
+trainer_text_single=Бизнес-тренер:
+trainer_text_plural=Бизнес-тренеры:
 trainer_font_size=11
 trainer_line_x=96
 trainer_line_y=275
@@ -30,3 +32,33 @@ right_quote_x=482
 
 logo_y=712
 logo_width=162
+
+[TheSales]
+font_name=EuclidFlex-Regular
+
+blue_color_r=180
+blue_color_g=177
+blue_color_b=22
+supplementary_font_size=16
+supplementary_first_line_y=520
+supplementary_second_line_y=427
+
+trainee_font_size=30
+trainee_line_y=471
+
+training_font_size=28
+training_mid_y=356
+training_line_height=24
+
+training_place_date_font_size=10
+training_place_date_y=83
+training_place_date_line_height=22
+
+trainer_text_single=Тренер:
+trainer_text_plural=Тренеры:
+trainer_font_size=10
+trainer_line_x=122
+trainer_line_y=193
+trainer_line_height=14
+trainer_signature_line_gap=8
+trainer_signature_line_length=102

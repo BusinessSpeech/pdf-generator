@@ -20,6 +20,7 @@ def parse_int(string_value, default_value):
 
 @app.route('/generate', methods=['POST'])
 def generate():
+    template = request.form['template']
     training_name = request.form['training_name']
     trainer_names = request.form['trainer_names']
     training_date = request.form['training_date']
@@ -28,12 +29,14 @@ def generate():
     training_type = request.form['training_type']
     participants = request.form['participants']
     participants_list = [p.strip() for p in participants.split('\n')]
-    print('Generating PDF for `{}`, {} participants'
+    print('Generating PDF for `{}`, {} participant(s)'
           .format(training_name.replace('\n', ' ').replace('\r', ''), len(participants_list)))
 
     buffer = io.BytesIO()
     create_multipage_pdf(
-        buffer, participants_list, trainer_names, training_name, training_date, training_place, quotes_offset, training_type)
+        buffer, template, participants_list, trainer_names, training_name, training_date,
+        training_place, quotes_offset, training_type
+    )
     formatted_date = training_date.replace(' ', '_')
     buffer.seek(0)
     trainers_string = '-'.join(trainer_names.split('\n')).replace('\r', '')

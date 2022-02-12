@@ -1,5 +1,6 @@
 import reportlab.rl_config
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
@@ -11,24 +12,25 @@ reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
 print(A4)
 
-FONT_NAME = 'OsnovaPro'
+DEFAULT_FONT_NAME = 'OsnovaPro'
 
-pdfmetrics.registerFont(TTFont(FONT_NAME, './fonts/OsnovaPro.ttf'))
+pdfmetrics.registerFont(TTFont(DEFAULT_FONT_NAME, './fonts/OsnovaPro.ttf'))
+pdfmetrics.registerFont(TTFont('EuclidFlex-Regular', './fonts/EuclidFlex-Regular.ttf'))
 
 
-def create_multipage_pdf(filename, participants_list, trainer_names, training_name, date, place, quotes_offset, training_type):
-    pdf_config = config['default'] if 'default' in config else dict()
+def create_multipage_pdf(filename, template, participants_list, trainer_names, training_name, date, place, quotes_offset, training_type):
+    pdf_config = config[template] if template in config else config['default']
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:
-        create_page(c, pdf_config, mid_width, participant, training_name, trainer_names, date, place, quotes_offset, training_type)
+        create_page(c, pdf_config, template, mid_width, participant, training_name, trainer_names, date, place, quotes_offset, training_type)
         c.showPage()
 
     c.save()
 
 
 def set_font(c, pdf_config, font_size):
-    font_name = pdf_config['font_name'] if 'font_name' in pdf_config else FONT_NAME
+    font_name = pdf_config['font_name'] if 'font_name' in pdf_config else DEFAULT_FONT_NAME
     c.setFont(font_name, font_size)
 
 
@@ -57,14 +59,29 @@ def draw_logo(c, pdf_config, mid_width):
     d.drawOn(c, logo_x, logo_y)
 
 
-def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_names, date, place, quotes_offset, training_type):
+def create_page(c, pdf_config, template, mid_width, trainee_name, training_name, trainer_names, date, place, quotes_offset, training_type):
+    draw_background(c, template, mid_width, pdf_config, quotes_offset)
     print_supplementary_text(c, pdf_config, mid_width, training_type)
     print_trainee_name(c, pdf_config, mid_width, trainee_name)
     print_training_title(c, pdf_config, mid_width, training_name)
     print_date_and_place(c, pdf_config, mid_width, date, place)
     print_trainer_names(c, pdf_config, trainer_names)
-    draw_logo(c, pdf_config, mid_width)
-    draw_quotes(c, pdf_config, quotes_offset)
+
+
+def get_background_image(template):
+    if template == 'TheSales':
+        return 'images/TheSales_bg.png'
+    else:
+        return None
+
+
+def draw_background(c, template, mid_width, pdf_config, quotes_offset):
+    background = get_background_image(template)
+    if background is not None:
+        c.drawImage(background, x=0, y=0, width=A4[0], height=A4[1])
+    else:
+        draw_logo(c, pdf_config, mid_width)
+        draw_quotes(c, pdf_config, quotes_offset)
 
 
 def print_supplementary_text(c, pdf_config, mid_width, training_type):
@@ -124,10 +141,12 @@ def print_trainer_names(c, pdf_config, trainer_names):
     signature_line_length = int(pdf_config['trainer_signature_line_length'])
 
     set_font(c, pdf_config, font_size)
-    c.drawString(left, top, 'Бизнес-тренер:')
+    trainer_names_list = [l.strip() for l in trainer_names.split('\n') if l.strip() != '']
+    trainer_text =\
+        pdf_config['trainer_text_single'] if len(trainer_names_list) == 1 else pdf_config['trainer_text_plural']
+    c.drawString(left, top, trainer_text)
     second_line_y = top - line_height
     line_x_list = []
-    trainer_names_list = [l.strip() for l in trainer_names.split('\n') if l.strip() != '']
     for trainer_name in trainer_names_list:
         t = c.beginText(left, second_line_y)
         t.textOut(trainer_name)
