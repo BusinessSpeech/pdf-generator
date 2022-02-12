@@ -16,12 +16,12 @@ FONT_NAME = 'OsnovaPro'
 pdfmetrics.registerFont(TTFont(FONT_NAME, './fonts/OsnovaPro.ttf'))
 
 
-def create_multipage_pdf(filename, participants_list, trainer_name, training_name, date, place, quotes_offset, training_type):
+def create_multipage_pdf(filename, participants_list, trainer_names, training_name, date, place, quotes_offset, training_type):
     pdf_config = config['default'] if 'default' in config else dict()
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:
-        create_page(c, pdf_config, mid_width, participant, training_name, trainer_name, date, place, quotes_offset, training_type)
+        create_page(c, pdf_config, mid_width, participant, training_name, trainer_names, date, place, quotes_offset, training_type)
         c.showPage()
 
     c.save()
@@ -52,12 +52,12 @@ def draw_logo(c, pdf_config, mid_width):
     d.drawOn(c, logo_x, logo_y)
 
 
-def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_name, date, place, quotes_offset, training_type):
+def create_page(c, pdf_config, mid_width, trainee_name, training_name, trainer_names, date, place, quotes_offset, training_type):
     print_supplementary_text(c, pdf_config, mid_width, training_type)
     print_trainee_name(c, pdf_config, mid_width, trainee_name)
     print_training_title(c, pdf_config, mid_width, training_name)
     print_date_and_place(c, pdf_config, mid_width, date, place)
-    print_trainer_name(c, pdf_config, trainer_name)
+    print_trainer_names(c, pdf_config, trainer_names)
     draw_logo(c, pdf_config, mid_width)
     draw_quotes(c, pdf_config, quotes_offset)
 
@@ -110,7 +110,7 @@ def print_date_and_place(c, pdf_config, mid_width, date, place):
     c.drawCentredString(mid_width, text_y - line_height, place)
 
 
-def print_trainer_name(c, pdf_config, trainer_name):
+def print_trainer_names(c, pdf_config, trainer_names):
     font_size = int(pdf_config['trainer_font_size'])
     left = int(pdf_config['trainer_line_x'])
     top = int(pdf_config['trainer_line_y'])
@@ -121,14 +121,23 @@ def print_trainer_name(c, pdf_config, trainer_name):
     c.setFont(FONT_NAME, font_size)
     c.drawString(left, top, 'Бизнес-тренер:')
     second_line_y = top - line_height
-    t = c.beginText(left, second_line_y)
-    t.textOut(trainer_name)
-    new_x, _ = t.getCursor()
-    c.drawText(t)
+    line_x_list = []
+    trainer_names_list = [l.strip() for l in trainer_names.split('\n') if l.strip() != '']
+    for trainer_name in trainer_names_list:
+        t = c.beginText(left, second_line_y)
+        t.textOut(trainer_name)
+        new_x, _ = t.getCursor()
+        line_x_list.append(new_x)
+        c.drawText(t)
+        second_line_y -= line_height
 
-    signature_line_x = new_x + signature_line_gap
-    p = c.beginPath()
-    p.moveTo(signature_line_x, second_line_y - 0.2)
-    p.lineTo(signature_line_x + signature_line_length, second_line_y + 0.2)
-    c.setLineWidth(0.5)
-    c.drawPath(p)
+    second_line_y = top - line_height
+    max_x = max(line_x_list)
+    for i, _ in enumerate(line_x_list):
+        signature_line_x = max_x + signature_line_gap
+        p = c.beginPath()
+        p.moveTo(signature_line_x, second_line_y - 0.2)
+        p.lineTo(signature_line_x + signature_line_length, second_line_y + 0.2)
+        c.setLineWidth(0.5)
+        c.drawPath(p)
+        second_line_y -= line_height
