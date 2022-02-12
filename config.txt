@@ -1,7 +1,7 @@
 [default]
-blue_color_r=61
-blue_color_g=189
-blue_color_b=237
+blue_color_r=0
+blue_color_g=177
+blue_color_b=235
 supplementary_font_size=14
 supplementary_first_line_y=567
 supplementary_second_line_y=502
