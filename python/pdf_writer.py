@@ -76,6 +76,8 @@ def create_page(c, pdf_config, template, mid_width, trainee_name, training_name,
 def get_background_image(template):
     if template == 'TheSales':
         return 'images/TheSales_bg.png'
+    elif template == 'Business Speech':
+        return 'images/BusinessSpeech.png'
     else:
         return None
 
