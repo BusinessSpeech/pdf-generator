@@ -5,13 +5,14 @@
         <link rel="stylesheet" href="static/index.css">
     </head>
     <body>
-        <form action="/generate" method="post">
+        <form action="/generate" method="post" enctype="multipart/form-data">
             <div class="wrapper">
                 <h1 class="title">PDF generator</h1>
 
                 <div class="header"> Template </div>
                 <select name="template">
                     <option value="default" selected="selected">Business Speech (no background)</option>
+                    <option value="Business Speech">Business Speech</option>
                     <option value="TheSales">TheSales</option>
                 </select>
 
@@ -20,6 +21,22 @@
 
                 <div class="header"> Trainer name(s) </div>
                 <textarea type="text" class="input" name="trainer_names" required="required" placeholder="Trainer"></textarea>
+
+                <div class="header"> Signature(s) </div>
+                <div class="sign_wrapper">
+                    <label class="sign_label">
+                        <span>Signature 1</span>
+                        <input type="file" class="sign_input" name="sign1" accept=".png"/>
+                    </label>
+                    <label class="sign_label">
+                        <span>Signature 2</span>
+                        <input type="file" class="sign_input" name="sign2" accept=".png"/>
+                    </label>
+                    <label class="sign_label">
+                        <span>Signature 3</span>
+                        <input type="file" class="sign_input" name="sign3" accept=".png"/>
+                    </label>
+                </div>
 
                 <div class="header"> Date </div>
                 <input type="text" class="input" name="training_date" required="required" placeholder="Date"/>

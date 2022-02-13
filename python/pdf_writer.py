@@ -1,3 +1,5 @@
+from itertools import zip_longest
+
 import reportlab.rl_config
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import ImageReader
@@ -18,12 +20,14 @@ pdfmetrics.registerFont(TTFont(DEFAULT_FONT_NAME, './fonts/OsnovaPro.ttf'))
 pdfmetrics.registerFont(TTFont('EuclidFlex-Regular', './fonts/EuclidFlex-Regular.ttf'))
 
 
-def create_multipage_pdf(filename, template, participants_list, trainer_names, training_name, date, place, quotes_offset, training_type):
+def create_multipage_pdf(filename, template, participants_list, trainer_names, trainer_signatures, training_name, date,
+                         place, quotes_offset, training_type):
     pdf_config = config[template] if template in config else config['default']
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:
-        create_page(c, pdf_config, template, mid_width, participant, training_name, trainer_names, date, place, quotes_offset, training_type)
+        create_page(c, pdf_config, template, mid_width, participant, training_name, trainer_names, trainer_signatures,
+                    date, place, quotes_offset, training_type)
         c.showPage()
 
     c.save()
@@ -59,13 +63,14 @@ def draw_logo(c, pdf_config, mid_width):
     d.drawOn(c, logo_x, logo_y)
 
 
-def create_page(c, pdf_config, template, mid_width, trainee_name, training_name, trainer_names, date, place, quotes_offset, training_type):
+def create_page(c, pdf_config, template, mid_width, trainee_name, training_name, trainer_names, trainer_signatures,
+                date, place, quotes_offset, training_type):
     draw_background(c, template, mid_width, pdf_config, quotes_offset)
     print_supplementary_text(c, pdf_config, mid_width, training_type)
     print_trainee_name(c, pdf_config, mid_width, trainee_name)
     print_training_title(c, pdf_config, mid_width, training_name)
     print_date_and_place(c, pdf_config, mid_width, date, place)
-    print_trainer_names(c, pdf_config, trainer_names)
+    print_trainer_names(c, pdf_config, trainer_names, trainer_signatures)
 
 
 def get_background_image(template):
@@ -132,7 +137,7 @@ def print_date_and_place(c, pdf_config, mid_width, date, place):
     c.drawCentredString(mid_width, text_y - line_height, place)
 
 
-def print_trainer_names(c, pdf_config, trainer_names):
+def print_trainer_names(c, pdf_config, trainer_names, trainer_signatures):
     font_size = int(pdf_config['trainer_font_size'])
     left = int(pdf_config['trainer_line_x'])
     top = int(pdf_config['trainer_line_y'])
@@ -157,11 +162,21 @@ def print_trainer_names(c, pdf_config, trainer_names):
 
     second_line_y = top - line_height
     max_x = max(line_x_list)
-    for i, _ in enumerate(line_x_list):
+    for _, trainer_signature in zip_longest(trainer_names_list, trainer_signatures):
         signature_line_x = max_x + signature_line_gap
         p = c.beginPath()
         p.moveTo(signature_line_x, second_line_y - 0.2)
         p.lineTo(signature_line_x + signature_line_length, second_line_y + 0.2)
         c.setLineWidth(0.5)
         c.drawPath(p)
+        if trainer_signature is not None:
+            reader = ImageReader(trainer_signature)
+            sign_size = reader.getSize()
+            sign_height = line_height * 3
+            sign_dx = 5
+            sign_dy = sign_height / 2
+            sign_scale = sign_size[1] / sign_height
+            sign_width = int(sign_size[0] / sign_scale)
+            c.drawImage(reader, x=signature_line_x + sign_dx, y=second_line_y - sign_dy,
+                        width=sign_width, height=sign_height, mask=[100, 255, 100, 255, 100, 255])
         second_line_y -= line_height

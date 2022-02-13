@@ -28,15 +28,18 @@ def generate():
     quotes_offset = parse_int(request.form['quotes_offset'], 0)
     training_type = request.form['training_type']
     participants = request.form['participants']
+    signature_file_names = [f'sign{i}' for i in range(1, 4)]
+    signatures = [
+        io.BytesIO(request.files[name].read()) for name in signature_file_names if
+        (name in request.files and request.files[name].filename != '')
+    ]
     participants_list = [p.strip() for p in participants.split('\n')]
     print('Generating PDF for `{}`, {} participant(s)'
           .format(training_name.replace('\n', ' ').replace('\r', ''), len(participants_list)))
 
     buffer = io.BytesIO()
-    create_multipage_pdf(
-        buffer, template, participants_list, trainer_names, training_name, training_date,
-        training_place, quotes_offset, training_type
-    )
+    create_multipage_pdf(buffer, template, participants_list, trainer_names, signatures, training_name, training_date,
+                         training_place, quotes_offset, training_type)
     formatted_date = training_date.replace(' ', '_')
     buffer.seek(0)
     trainers_string = '-'.join(trainer_names.split('\n')).replace('\r', '')

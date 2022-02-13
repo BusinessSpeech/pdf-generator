@@ -46,6 +46,24 @@
     grid-column-end: 2;
 }
 
+.sign_wrapper {
+    width: 400px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    grid-column-start: 2;
+    grid-column-end: 2;
+}
+
+.sign_label {
+    display: inline-block;
+    max-width: 120px;
+}
+
+.sign_input {
+    width: 0;
+}
+
 .generate_button {
     width: 100px;
     justify-self: center;
