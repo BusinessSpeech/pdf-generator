@@ -59,6 +59,6 @@ trainer_text_plural=Тренеры:
 trainer_font_size=10
 trainer_line_x=122
 trainer_line_y=193
-trainer_line_height=14
+trainer_line_height=22
 trainer_signature_line_gap=8
 trainer_signature_line_length=102
