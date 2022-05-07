@@ -71,3 +71,9 @@
     grid-column-start: 1;
     grid-column-end: 3;
 }
+
+.checkbox {
+    justify-self: left;
+    align-self: baseline;
+    margin: 0;
+}

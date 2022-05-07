@@ -33,6 +33,17 @@ def create_multipage_pdf(filename, template, participants_list, trainer_names, t
     c.save()
 
 
+def create_single_pdf(file_object, template, participant, trainer_names, trainer_signatures, training_name, date,
+                      place, quotes_offset, training_type):
+    pdf_config = config[template] if template in config else config['default']
+    mid_width = A4[0] / 2
+    c = Canvas(file_object, pagesize=A4, bottomup=1)
+    create_page(c, pdf_config, template, mid_width, participant, training_name, trainer_names, trainer_signatures,
+                date, place, quotes_offset, training_type)
+    c.showPage()
+    c.save()
+
+
 def set_font(c, pdf_config, font_size):
     font_name = pdf_config['font_name'] if 'font_name' in pdf_config else DEFAULT_FONT_NAME
     c.setFont(font_name, font_size)
@@ -149,7 +160,7 @@ def print_trainer_names(c, pdf_config, trainer_names, trainer_signatures):
 
     set_font(c, pdf_config, font_size)
     trainer_names_list = [l.strip() for l in trainer_names.split('\n') if l.strip() != '']
-    trainer_text =\
+    trainer_text = \
         pdf_config['trainer_text_single'] if len(trainer_names_list) == 1 else pdf_config['trainer_text_plural']
     c.drawString(left, top, trainer_text)
     second_line_y = top - line_height
