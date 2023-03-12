@@ -38,6 +38,15 @@
     grid-column-end: 1;
 }
 
+.header-centered {
+    justify-self: end;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .input {
     width: 400px;
     box-sizing: border-box;
@@ -76,4 +85,8 @@
     justify-self: left;
     align-self: baseline;
     margin: 0;
+}
+
+.training-type-option {
+    margin: 5px 0;
 }

@@ -2,7 +2,7 @@ import io
 import zipfile
 
 from flask import Flask, render_template, request, send_file
-from pdf_writer import create_multipage_pdf, create_single_pdf
+from pdf_writer import create_multipage_pdf, create_single_pdf, resolve_training_type_text
 
 app = Flask(__name__, template_folder='../templates/', static_url_path='/static', static_folder='../static')
 
@@ -28,12 +28,14 @@ def generate():
     training_place = request.form['training_place']
     quotes_offset = parse_int(request.form['quotes_offset'], 0)
     training_type = request.form['training_type']
+    training_type_string = request.form['training_type_string']
     participants = request.form['participants']
     signature_file_names = [f'sign{i}' for i in range(1, 4)]
     signatures = [
         io.BytesIO(request.files[name].read()) for name in signature_file_names if
         (name in request.files and request.files[name].filename != '')
     ]
+    effective_training_type_text = resolve_training_type_text(training_type, training_type_string)
     participants_list = [p.strip() for p in participants.split('\n')]
     separate_files = 'separate_files' in request.form
     print('Generating PDF for `{}`, {} participant(s)'
@@ -48,7 +50,7 @@ def generate():
             for participant in participants_list:
                 buf = io.BytesIO()
                 create_single_pdf(buf, template, participant, trainer_names, signatures, training_name,
-                                  training_date, training_place, quotes_offset, training_type)
+                                  training_date, training_place, quotes_offset, effective_training_type_text)
                 buf.seek(0)
                 participant_underscored = participant.replace(' ', '_')
                 zf.writestr(f'{participant_underscored}.pdf', buf.read())
@@ -57,7 +59,7 @@ def generate():
         application_type = 'application/pdf'
         file_extension = 'pdf'
         create_multipage_pdf(buffer, template, participants_list, trainer_names, signatures, training_name,
-                             training_date, training_place, quotes_offset, training_type)
+                             training_date, training_place, quotes_offset, effective_training_type_text)
 
     formatted_date = training_date.replace(' ', '_')
     buffer.seek(0)

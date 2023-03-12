@@ -21,13 +21,13 @@ pdfmetrics.registerFont(TTFont('EuclidFlex-Regular', './fonts/EuclidFlex-Regular
 
 
 def create_multipage_pdf(filename, template, participants_list, trainer_names, trainer_signatures, training_name, date,
-                         place, quotes_offset, training_type):
+                         place, quotes_offset, training_type_text):
     pdf_config = config[template] if template in config else config['default']
     mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:
         create_page(c, pdf_config, template, mid_width, participant, training_name, trainer_names, trainer_signatures,
-                    date, place, quotes_offset, training_type)
+                    date, place, quotes_offset, training_type_text)
         c.showPage()
 
     c.save()
@@ -75,9 +75,9 @@ def draw_logo(c, pdf_config, mid_width):
 
 
 def create_page(c, pdf_config, template, mid_width, trainee_name, training_name, trainer_names, trainer_signatures,
-                date, place, quotes_offset, training_type):
+                date, place, quotes_offset, training_type_text):
     draw_background(c, template, mid_width, pdf_config, quotes_offset)
-    print_supplementary_text(c, pdf_config, mid_width, training_type)
+    print_supplementary_text(c, pdf_config, mid_width, training_type_text)
     print_trainee_name(c, pdf_config, mid_width, trainee_name)
     print_training_title(c, pdf_config, mid_width, training_name)
     print_date_and_place(c, pdf_config, mid_width, date, place)
@@ -102,14 +102,13 @@ def draw_background(c, template, mid_width, pdf_config, quotes_offset):
         draw_quotes(c, pdf_config, quotes_offset)
 
 
-def print_supplementary_text(c, pdf_config, mid_width, training_type):
+def print_supplementary_text(c, pdf_config, mid_width, training_type_text):
     r = int(pdf_config['blue_color_r'])
     g = int(pdf_config['blue_color_g'])
     b = int(pdf_config['blue_color_b'])
     font_size = int(pdf_config['supplementary_font_size'])
     first_line_y = int(pdf_config['supplementary_first_line_y'])
     second_line_y = int(pdf_config['supplementary_second_line_y'])
-    training_type_text = 'прошёл(-ла) тренинг' if training_type == 'training' else 'прошёл(-ла) мастер-класс'
 
     set_font(c, pdf_config, font_size)
     c.setFillColorRGB(r / 256, g / 256, b / 256)
@@ -193,3 +192,9 @@ def print_trainer_names(c, pdf_config, trainer_names, trainer_signatures):
             c.drawImage(reader, x=signature_line_x + sign_dx, y=second_line_y - sign_dy,
                         width=sign_width, height=sign_height, mask=[100, 255, 100, 255, 100, 255])
         second_line_y -= line_height
+
+
+def resolve_training_type_text(training_type, training_type_string):
+    if training_type_string is not None and training_type_string != '':
+        return training_type_string
+    return 'прошёл(-ла) тренинг' if training_type == 'training' else 'прошёл(-ла) мастер-класс'
