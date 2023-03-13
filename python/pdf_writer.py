@@ -76,7 +76,7 @@ def draw_logo(c, pdf_config, mid_width):
 
 def create_page(c, pdf_config, template, mid_width, trainee_name, training_name, trainer_names, trainer_signatures,
                 date, place, quotes_offset, training_type_text):
-    draw_background(c, template, mid_width, pdf_config, quotes_offset)
+    draw_background(c, template, pdf_config, quotes_offset)
     print_supplementary_text(c, pdf_config, mid_width, training_type_text)
     print_trainee_name(c, pdf_config, mid_width, trainee_name)
     print_training_title(c, pdf_config, mid_width, training_name)
@@ -93,13 +93,14 @@ def get_background_image(template):
         return None
 
 
-def draw_background(c, template, mid_width, pdf_config, quotes_offset):
-    background = get_background_image(template)
-    if background is not None:
+def draw_background(c, template, pdf_config, quotes_offset):
+    if template == 'Business Speech':
+        background = 'images/BusinessSpeech.png'
         c.drawImage(background, x=0, y=0, width=A4[0], height=A4[1])
-    else:
-        draw_logo(c, pdf_config, mid_width)
         draw_quotes(c, pdf_config, quotes_offset)
+    elif template == 'TheSales':
+        background = 'images/TheSales_bg.png'
+        c.drawImage(background, x=0, y=0, width=A4[0], height=A4[1])
 
 
 def print_supplementary_text(c, pdf_config, mid_width, training_type_text):
