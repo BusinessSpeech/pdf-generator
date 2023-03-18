@@ -9,7 +9,7 @@ RUN pip install -r requirements.txt
 COPY python python
 COPY fonts fonts
 COPY images images
-COPY config.txt .
+COPY configs configs
 
 COPY templates templates
 

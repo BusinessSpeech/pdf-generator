@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from typing import List
 
 import reportlab.rl_config
 from reportlab.lib.pagesizes import A4
@@ -8,7 +9,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
 from svglib.svglib import svg2rlg
 
-from config import config
+from config import select_config
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
@@ -22,12 +23,10 @@ pdfmetrics.registerFont(TTFont('EuclidFlex-Regular', './fonts/EuclidFlex-Regular
 
 def create_multipage_pdf(filename, template, participants_list, trainer_names, trainer_signatures, training_name, date,
                          place, quotes_offset, training_type_text):
-    pdf_config = config[template] if template in config else config['default']
-    mid_width = A4[0] / 2
     c = Canvas(filename, pagesize=A4, bottomup=1)
     for participant in participants_list:
-        create_page(c, pdf_config, template, mid_width, participant, training_name, trainer_names, trainer_signatures,
-                    date, place, quotes_offset, training_type_text)
+        create_page(c, template, participant, training_name, trainer_names, trainer_signatures, date, place,
+                    quotes_offset, training_type_text)
         c.showPage()
 
     c.save()
@@ -35,145 +34,122 @@ def create_multipage_pdf(filename, template, participants_list, trainer_names, t
 
 def create_single_pdf(file_object, template, participant, trainer_names, trainer_signatures, training_name, date,
                       place, quotes_offset, training_type):
-    pdf_config = config[template] if template in config else config['default']
-    mid_width = A4[0] / 2
     c = Canvas(file_object, pagesize=A4, bottomup=1)
-    create_page(c, pdf_config, template, mid_width, participant, training_name, trainer_names, trainer_signatures,
-                date, place, quotes_offset, training_type)
+    create_page(c, template, participant, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
+                training_type)
     c.showPage()
     c.save()
 
 
-def set_font(c, pdf_config, font_size):
-    font_name = pdf_config['font_name'] if 'font_name' in pdf_config else DEFAULT_FONT_NAME
-    c.setFont(font_name, font_size)
-
-
-def draw_quotes(c, pdf_config, quotes_offset):
+def draw_quotes(c, quotes_config, quotes_offset):
     """
     Width and height of svg images are hardcoded inside images themselves
     """
-    quote_y = int(pdf_config['quote_y'])
-    right_quote_x = int(pdf_config['right_quote_x'])
-    left_quote_x = int(pdf_config['left_quote_x'])
+    quote_y = int(quotes_config['y'])
+    right_quote_x = int(quotes_config['right_x'])
+    left_quote_x = int(quotes_config['left_x'])
     quote_l = svg2rlg('./images/quote_l.svg')
     quote_r = svg2rlg('./images/quote_r.svg')
     quote_l.drawOn(c, left_quote_x + quotes_offset, quote_y)
     quote_r.drawOn(c, right_quote_x - quotes_offset, quote_y)
 
 
-def draw_logo(c, pdf_config, mid_width):
-    """
-    Width and height of svg are hardcoded inside svg itself
-    However, logo width is used to center the image so it's also written in the config
-    """
-    logo_width = int(pdf_config['logo_width'])
-    logo_y = int(pdf_config['logo_y'])
-    logo_x = int(mid_width - logo_width / 2)
-    d = svg2rlg('./images/logo.svg')
-    d.drawOn(c, logo_x, logo_y)
+def create_page(c, template, trainee_name, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
+                training_type_text):
+    current_config = select_config(template)
+    document_size = A4
+    middle = document_size[0] / 2
+    draw_background(c, current_config, document_size)
+    print_supplementary_text(c, current_config, middle, training_type_text)
+    print_trainee_name(c, current_config, middle, trainee_name)
+    print_training_title(c, current_config, middle, training_name)
+    print_date_and_place(c, current_config, middle, date, place)
+    print_trainer_names(c, current_config, trainer_names, trainer_signatures)
 
-
-def create_page(c, pdf_config, template, mid_width, trainee_name, training_name, trainer_names, trainer_signatures,
-                date, place, quotes_offset, training_type_text):
-    draw_background(c, template, pdf_config, quotes_offset)
-    print_supplementary_text(c, pdf_config, mid_width, training_type_text)
-    print_trainee_name(c, pdf_config, mid_width, trainee_name)
-    print_training_title(c, pdf_config, mid_width, training_name)
-    print_date_and_place(c, pdf_config, mid_width, date, place)
-    print_trainer_names(c, pdf_config, trainer_names, trainer_signatures)
-
-
-def get_background_image(template):
-    if template == 'TheSales':
-        return 'images/TheSales_bg.png'
-    elif template == 'Business Speech':
-        return 'images/BusinessSpeech.png'
-    else:
-        return None
-
-
-def draw_background(c, template, pdf_config, quotes_offset):
     if template == 'Business Speech':
-        background = 'images/BusinessSpeech.png'
-        c.drawImage(background, x=0, y=0, width=A4[0], height=A4[1])
-        draw_quotes(c, pdf_config, quotes_offset)
-    elif template == 'TheSales':
-        background = 'images/TheSales_bg.png'
-        c.drawImage(background, x=0, y=0, width=A4[0], height=A4[1])
+        draw_quotes(c, current_config['quotes'], quotes_offset)
 
 
-def print_supplementary_text(c, pdf_config, mid_width, training_type_text):
-    r = int(pdf_config['blue_color_r'])
-    g = int(pdf_config['blue_color_g'])
-    b = int(pdf_config['blue_color_b'])
-    font_size = int(pdf_config['supplementary_font_size'])
-    first_line_y = int(pdf_config['supplementary_first_line_y'])
-    second_line_y = int(pdf_config['supplementary_second_line_y'])
-
-    set_font(c, pdf_config, font_size)
-    c.setFillColorRGB(r / 256, g / 256, b / 256)
-    c.drawCentredString(mid_width, first_line_y, 'подтверждает, что')
-    c.drawCentredString(mid_width, second_line_y, training_type_text)
+def get_or_default(key, specific_config, default_config):
+    return specific_config[key] if key in specific_config else default_config[key]
 
 
-def print_trainee_name(c, pdf_config, mid_width, trainee_name):
-    font_size = int(pdf_config['trainee_font_size'])
-    text_y = int(pdf_config['trainee_line_y'])
-
-    set_font(c, pdf_config, font_size)
-    c.setFillColorRGB(0.0, 0.0, 0.0)
-    c.drawCentredString(mid_width, text_y, trainee_name)
-
-
-def print_training_title(c, pdf_config, mid_width, training_title):
-    font_size = int(pdf_config['training_font_size'])
-    text_mid_y = int(pdf_config['training_mid_y'])
-    line_height = int(pdf_config['training_line_height'])
-
-    set_font(c, pdf_config, font_size)
-    c.setFillColorRGB(0.0, 0.0, 0.0)
-    training_name_lines = [l.strip() for l in training_title.split('\n') if l.strip() != '']
-    start_top = text_mid_y + (len(training_name_lines) - 1) / 2 * line_height
-    line_top = start_top
-    for line in training_name_lines:
-        c.drawCentredString(mid_width, line_top, line)
-        line_top -= line_height
+def draw_centered_text_by_config(c, lines: List[str], mid_width, defaults, text_config):
+    set_font(c, text_config, defaults)
+    lines_count = len(lines)
+    y = int(text_config['line_y'])
+    lh = int(text_config['line_height']) if 'line_height' in text_config else 0
+    for i, line in enumerate(lines):
+        text_y = y + lh / 2 * (lines_count - 1) - lh * i
+        c.drawCentredString(mid_width, text_y, line)
 
 
-def print_date_and_place(c, pdf_config, mid_width, date, place):
-    font_size = int(pdf_config['training_place_date_font_size'])
-    text_y = int(pdf_config['training_place_date_y'])
-    line_height = int(pdf_config['training_place_date_line_height'])
-    set_font(c, pdf_config, font_size)
-    c.drawCentredString(mid_width, text_y, date)
-    c.drawCentredString(mid_width, text_y - line_height, place)
+def set_font(c, text_config, defaults):
+    font_name = get_or_default('font_name', text_config, defaults)
+    font_size = int(get_or_default('font_size', text_config, defaults))
+    color_r = int(get_or_default('color_r', text_config, defaults))
+    color_g = int(get_or_default('color_g', text_config, defaults))
+    color_b = int(get_or_default('color_b', text_config, defaults))
+    c.setFont(font_name, font_size)
+    c.setFillColorRGB(color_r / 256, color_g / 256, color_b / 256)
 
 
-def print_trainer_names(c, pdf_config, trainer_names, trainer_signatures):
-    font_size = int(pdf_config['trainer_font_size'])
-    left = int(pdf_config['trainer_line_x'])
-    top = int(pdf_config['trainer_line_y'])
-    line_height = int(pdf_config['trainer_line_height'])
-    signature_line_gap = int(pdf_config['trainer_signature_line_gap'])
-    signature_line_length = int(pdf_config['trainer_signature_line_length'])
+def split_by_newlines(text: str) -> List[str]:
+    return [line.strip() for line in text.split('\n') if line.strip() != '']
 
-    set_font(c, pdf_config, font_size)
-    trainer_names_list = [l.strip() for l in trainer_names.split('\n') if l.strip() != '']
-    trainer_text = \
-        pdf_config['trainer_text_single'] if len(trainer_names_list) == 1 else pdf_config['trainer_text_plural']
-    c.drawString(left, top, trainer_text)
-    second_line_y = top - line_height
+
+def draw_background(c, current_config, document_size):
+    background = 'images/' + current_config['background']['image_name']
+    c.drawImage(background, x=0, y=0, width=document_size[0], height=document_size[1])
+
+
+def print_supplementary_text(c, current_config, middle, training_type_text):
+    draw_centered_text_by_config(
+        c, ['подтверждает, что', training_type_text], middle,
+        current_config['defaults'], current_config['supplementary']
+    )
+
+
+def print_trainee_name(c, current_config, middle, trainee_name):
+    draw_centered_text_by_config(c, [trainee_name], middle, current_config['defaults'], current_config['trainee'])
+
+
+def print_training_title(c, current_config, middle, training_name):
+    training_name_lines = split_by_newlines(training_name)
+    draw_centered_text_by_config(c, training_name_lines, middle, current_config['defaults'], current_config['training'])
+
+
+def print_date_and_place(c, current_config, middle, date, place):
+    draw_centered_text_by_config(c, [date, place], middle, current_config['defaults'], current_config['date_place'])
+
+
+def print_trainer_names(c, current_config, trainer_names, trainer_signatures):
+    trainers_config = current_config['trainers']
+    set_font(c, trainers_config, current_config['defaults'])
+    trainer_names_list = split_by_newlines(trainer_names)
+    trainer_text = trainers_config['text_single'] \
+        if len(trainer_names_list) == 1 else trainers_config['text_plural']
+    do_print_trainer_names(
+        c, int(trainers_config['line_x']), int(trainers_config['line_y']), int(trainers_config['line_height']),
+        int(trainers_config['signature_line_gap']), int(trainers_config['signature_line_length']),
+        trainer_names_list, trainer_signatures, trainer_text
+    )
+
+
+def do_print_trainer_names(c, x, y, line_height, signature_line_gap, signature_line_length, trainer_names_list,
+                           trainer_signatures, trainer_text):
+    c.drawString(x, y, trainer_text)
+    second_line_y = y - line_height
     line_x_list = []
     for trainer_name in trainer_names_list:
-        t = c.beginText(left, second_line_y)
+        t = c.beginText(x, second_line_y)
         t.textOut(trainer_name)
         new_x, _ = t.getCursor()
         line_x_list.append(new_x)
         c.drawText(t)
         second_line_y -= line_height
 
-    second_line_y = top - line_height
+    second_line_y = y - line_height
     max_x = max(line_x_list)
     for _, trainer_signature in zip_longest(trainer_names_list, trainer_signatures):
         signature_line_x = max_x + signature_line_gap
