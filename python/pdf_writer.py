@@ -2,7 +2,7 @@ from itertools import zip_longest
 from typing import List
 
 import reportlab.rl_config
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.pagesizes import mm
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -13,9 +13,8 @@ from config import select_config
 
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
-print(A4)
-
 DEFAULT_FONT_NAME = 'OsnovaPro'
+PAGE_SIZE = (216*mm, 303*mm)
 
 pdfmetrics.registerFont(TTFont(DEFAULT_FONT_NAME, './fonts/OsnovaPro.ttf'))
 pdfmetrics.registerFont(TTFont('EuclidFlex-Regular', './fonts/EuclidFlex-Regular.ttf'))
@@ -23,9 +22,9 @@ pdfmetrics.registerFont(TTFont('EuclidFlex-Regular', './fonts/EuclidFlex-Regular
 
 def create_multipage_pdf(filename, template, participants_list, trainer_names, trainer_signatures, training_name, date,
                          place, quotes_offset, training_type_text):
-    c = Canvas(filename, pagesize=A4, bottomup=1)
+    c = Canvas(filename, pagesize=PAGE_SIZE, bottomup=1)
     for participant in participants_list:
-        create_page(c, template, participant, training_name, trainer_names, trainer_signatures, date, place,
+        create_page(c, template, PAGE_SIZE, participant, training_name, trainer_names, trainer_signatures, date, place,
                     quotes_offset, training_type_text)
         c.showPage()
 
@@ -34,8 +33,8 @@ def create_multipage_pdf(filename, template, participants_list, trainer_names, t
 
 def create_single_pdf(file_object, template, participant, trainer_names, trainer_signatures, training_name, date,
                       place, quotes_offset, training_type):
-    c = Canvas(file_object, pagesize=A4, bottomup=1)
-    create_page(c, template, participant, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
+    c = Canvas(file_object, pagesize=PAGE_SIZE, bottomup=1)
+    create_page(c, template, PAGE_SIZE, participant, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
                 training_type)
     c.showPage()
     c.save()
@@ -54,10 +53,9 @@ def draw_quotes(c, quotes_config, quotes_offset):
     quote_r.drawOn(c, right_quote_x - quotes_offset, quote_y)
 
 
-def create_page(c, template, trainee_name, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
+def create_page(c, template, document_size, trainee_name, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
                 training_type_text):
     current_config = select_config(template)
-    document_size = A4
     middle = document_size[0] / 2
     draw_background(c, current_config, document_size)
     print_supplementary_text(c, current_config, middle, training_type_text)
@@ -68,6 +66,8 @@ def create_page(c, template, trainee_name, training_name, trainer_names, trainer
 
     if template == 'Business Speech':
         draw_quotes(c, current_config['quotes'], quotes_offset)
+    elif template == 'TheSales':
+        draw_centered_text_by_config(c, ['www.thesales.ru'], middle, current_config['defaults'], current_config['site'])
 
 
 def get_or_default(key, specific_config, default_config):
