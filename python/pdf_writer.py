@@ -20,22 +20,28 @@ pdfmetrics.registerFont(TTFont(DEFAULT_FONT_NAME, './fonts/OsnovaPro.ttf'))
 pdfmetrics.registerFont(TTFont('EuclidFlex-Regular', './fonts/EuclidFlex-Regular.ttf'))
 
 
+def get_next_number(number):
+    return None if number is None else number + 1
+
+
 def create_multipage_pdf(filename, template, participants_list, trainer_names, trainer_signatures, training_name, date,
-                         place, quotes_offset, training_type_text):
+                         place, quotes_offset, training_type_text, first_cert_number):
     c = Canvas(filename, pagesize=PAGE_SIZE, bottomup=1)
+    number = first_cert_number
     for participant in participants_list:
         create_page(c, template, PAGE_SIZE, participant, training_name, trainer_names, trainer_signatures, date, place,
-                    quotes_offset, training_type_text)
+                    quotes_offset, training_type_text, number)
+        number = get_next_number(number)
         c.showPage()
 
     c.save()
 
 
 def create_single_pdf(file_object, template, participant, trainer_names, trainer_signatures, training_name, date,
-                      place, quotes_offset, training_type):
+                      place, quotes_offset, training_type, cert_number):
     c = Canvas(file_object, pagesize=PAGE_SIZE, bottomup=1)
     create_page(c, template, PAGE_SIZE, participant, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
-                training_type)
+                training_type, cert_number)
     c.showPage()
     c.save()
 
@@ -54,7 +60,7 @@ def draw_quotes(c, quotes_config, quotes_offset):
 
 
 def create_page(c, template, document_size, trainee_name, training_name, trainer_names, trainer_signatures, date, place, quotes_offset,
-                training_type_text):
+                training_type_text, cert_number):
     current_config = select_config(template)
     middle = document_size[0] / 2
     draw_background(c, current_config, document_size)
@@ -63,6 +69,8 @@ def create_page(c, template, document_size, trainee_name, training_name, trainer
     print_training_title(c, current_config, middle, training_name)
     print_date_and_place(c, current_config, middle, date, place)
     print_trainer_names(c, current_config, trainer_names, trainer_signatures)
+    if cert_number is not None:
+        print_certificate_number(c, cert_number, current_config, middle)
 
     if template == 'Business Speech':
         draw_quotes(c, current_config['quotes'], quotes_offset)
@@ -74,14 +82,14 @@ def get_or_default(key, specific_config, default_config):
     return specific_config[key] if key in specific_config else default_config[key]
 
 
-def draw_centered_text_by_config(c, lines: List[str], mid_width, defaults, text_config):
+def draw_centered_text_by_config(c, lines: List[str], mid_text_x, defaults, text_config):
     set_font(c, text_config, defaults)
     lines_count = len(lines)
     y = int(text_config['line_y'])
     lh = int(text_config['line_height']) if 'line_height' in text_config else 0
     for i, line in enumerate(lines):
         text_y = y + lh / 2 * (lines_count - 1) - lh * i
-        c.drawCentredString(mid_width, text_y, line)
+        c.drawCentredString(mid_text_x, text_y, line)
 
 
 def set_font(c, text_config, defaults):
@@ -175,3 +183,10 @@ def resolve_training_type_text(training_type, training_type_string):
     if training_type_string is not None and training_type_string != '':
         return training_type_string
     return 'прошёл(-ла) тренинг' if training_type == 'training' else 'прошёл(-ла) мастер-класс'
+
+
+def print_certificate_number(c, number, current_config, middle):
+    certificate_number_config = current_config['certificate_number']
+    mid_text_x = middle if 'line_x' not in certificate_number_config else int(certificate_number_config['line_x'])
+    defaults = current_config['defaults']
+    draw_centered_text_by_config(c, ['№ ' + str(number)], mid_text_x, defaults, certificate_number_config)

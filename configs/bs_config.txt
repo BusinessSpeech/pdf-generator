@@ -42,3 +42,7 @@ signature_line_length=102
 y=408
 left_x=92
 right_x=479
+
+[certificate_number]
+line_y=100
+font_size=8

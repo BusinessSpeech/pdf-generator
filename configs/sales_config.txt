@@ -40,3 +40,11 @@ signature_line_length=102
 
 [site]
 line_y=46
+
+[certificate_number]
+line_x=542
+line_y=802
+font_size=8
+color_r=226
+color_g=223
+color_b=24
