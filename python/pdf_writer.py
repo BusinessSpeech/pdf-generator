@@ -191,7 +191,7 @@ def print_trainer_names(c, pdf_config, trainer_names, trainer_signatures):
             sign_scale = sign_size[1] / sign_height
             sign_width = int(sign_size[0] / sign_scale)
             c.drawImage(reader, x=signature_line_x + sign_dx, y=second_line_y - sign_dy,
-                        width=sign_width, height=sign_height, mask=[100, 255, 100, 255, 100, 255])
+                        width=sign_width, height=sign_height, mask=[255, 255, 255, 255, 255, 255])
         second_line_y -= line_height
 
 

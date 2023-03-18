@@ -3,6 +3,7 @@ import zipfile
 
 from flask import Flask, render_template, request, send_file
 from pdf_writer import create_multipage_pdf, create_single_pdf, resolve_training_type_text
+from image_processor import make_transparent_pixels_white
 
 app = Flask(__name__, template_folder='../templates/', static_url_path='/static', static_folder='../static')
 
@@ -32,7 +33,7 @@ def generate():
     participants = request.form['participants']
     signature_file_names = [f'sign{i}' for i in range(1, 4)]
     signatures = [
-        io.BytesIO(request.files[name].read()) for name in signature_file_names if
+        make_transparent_pixels_white(io.BytesIO(request.files[name].read())) for name in signature_file_names if
         (name in request.files and request.files[name].filename != '')
     ]
     effective_training_type_text = resolve_training_type_text(training_type, training_type_string)
