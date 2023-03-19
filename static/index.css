@@ -60,17 +60,19 @@
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     grid-column-start: 2;
     grid-column-end: 2;
-}
-
-.sign_label {
-    display: inline-block;
-    max-width: 120px;
+    margin: 0 10px;
+    padding: 0 5px;
 }
 
 .sign_input {
-    width: 0;
+    margin: 0 10px;
+}
+
+.sign_input::file-selector-button {
+    display: none;
 }
 
 .generate_button {

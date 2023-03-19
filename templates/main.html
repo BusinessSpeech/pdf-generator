@@ -23,20 +23,23 @@
                 <textarea type="text" class="input" name="trainer_names" required="required" placeholder="Trainer"></textarea>
 
                 <div class="header"> Signature(s) </div>
-                <div class="sign_wrapper">
-                    <label class="sign_label">
-                        <span>Signature 1</span>
-                        <input type="file" class="sign_input" name="sign1" accept=".png"/>
-                    </label>
-                    <label class="sign_label">
-                        <span>Signature 2</span>
-                        <input type="file" class="sign_input" name="sign2" accept=".png"/>
-                    </label>
-                    <label class="sign_label">
-                        <span>Signature 3</span>
-                        <input type="file" class="sign_input" name="sign3" accept=".png"/>
-                    </label>
-                </div>
+                <ol class="sign_wrapper">
+                    <li>
+                        <label class="sign_label">
+                            <input type="file" class="sign_input" name="sign1" accept=".png"/>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="sign_label">
+                            <input type="file" class="sign_input" name="sign2" accept=".png"/>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="sign_label">
+                            <input type="file" class="sign_input" name="sign3" accept=".png"/>
+                        </label>
+                    </li>
+                </ol>
 
                 <div class="header"> Date </div>
                 <input type="text" class="input" name="training_date" required="required" placeholder="Date"/>
