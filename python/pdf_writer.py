@@ -64,7 +64,6 @@ def create_page(c, template, document_size, trainee_name, training_name, trainer
     current_config = select_config(template)
     middle = document_size[0] / 2
     draw_background(c, current_config, document_size)
-    print_supplementary_text(c, current_config, middle, training_type_text)
     print_trainee_name(c, current_config, middle, trainee_name)
     print_training_title(c, current_config, middle, training_name)
     print_date_and_place(c, current_config, middle, date, place)
@@ -74,8 +73,14 @@ def create_page(c, template, document_size, trainee_name, training_name, trainer
 
     if template == 'Business Speech':
         draw_quotes(c, current_config['quotes'], quotes_offset)
+        print_supplementary_text(c, current_config, middle, 'подтверждает, что', training_type_text)
     elif template == 'TheSales':
         draw_text_by_config(c, ['www.thesales.ru'], middle, current_config['defaults'], current_config['site'])
+        print_supplementary_text(c, current_config, middle, 'подтверждает, что', training_type_text)
+    elif template == 'SCT':
+        print_supplementary_text(
+            c, current_config, middle, 'Настоящий сертификат подтверждает, что', training_type_text
+        )
 
 
 def get_or_default(key, specific_config, default_config):
@@ -115,9 +120,9 @@ def draw_background(c, current_config, document_size):
     c.drawImage(background, x=0, y=0, width=document_size[0], height=document_size[1])
 
 
-def print_supplementary_text(c, current_config, middle, training_type_text):
+def print_supplementary_text(c, current_config, middle, prefix, training_type_text):
     draw_text_by_config(
-        c, ['подтверждает, что', training_type_text], middle,
+        c, [prefix, training_type_text], middle,
         current_config['defaults'], current_config['supplementary']
     )
 
