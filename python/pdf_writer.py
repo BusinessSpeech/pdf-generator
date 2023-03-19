@@ -75,21 +75,25 @@ def create_page(c, template, document_size, trainee_name, training_name, trainer
     if template == 'Business Speech':
         draw_quotes(c, current_config['quotes'], quotes_offset)
     elif template == 'TheSales':
-        draw_centered_text_by_config(c, ['www.thesales.ru'], middle, current_config['defaults'], current_config['site'])
+        draw_text_by_config(c, ['www.thesales.ru'], middle, current_config['defaults'], current_config['site'])
 
 
 def get_or_default(key, specific_config, default_config):
     return specific_config[key] if key in specific_config else default_config[key]
 
 
-def draw_centered_text_by_config(c, lines: List[str], mid_text_x, defaults, text_config):
+def draw_text_by_config(c, lines: List[str], middle, defaults, text_config):
     set_font(c, text_config, defaults)
     lines_count = len(lines)
     y = int(text_config['line_y'])
+    x = int(text_config['line_x']) if 'line_x' in text_config else None
     lh = int(text_config['line_height']) if 'line_height' in text_config else 0
     for i, line in enumerate(lines):
         text_y = y + lh / 2 * (lines_count - 1) - lh * i
-        c.drawCentredString(mid_text_x, text_y, line)
+        if x is None:
+            c.drawCentredString(middle, text_y, line)
+        else:
+            c.drawString(x, text_y, line)
 
 
 def set_font(c, text_config, defaults):
@@ -112,23 +116,23 @@ def draw_background(c, current_config, document_size):
 
 
 def print_supplementary_text(c, current_config, middle, training_type_text):
-    draw_centered_text_by_config(
+    draw_text_by_config(
         c, ['подтверждает, что', training_type_text], middle,
         current_config['defaults'], current_config['supplementary']
     )
 
 
 def print_trainee_name(c, current_config, middle, trainee_name):
-    draw_centered_text_by_config(c, [trainee_name], middle, current_config['defaults'], current_config['trainee'])
+    draw_text_by_config(c, [trainee_name], middle, current_config['defaults'], current_config['trainee'])
 
 
 def print_training_title(c, current_config, middle, training_name):
     training_name_lines = split_by_newlines(training_name)
-    draw_centered_text_by_config(c, training_name_lines, middle, current_config['defaults'], current_config['training'])
+    draw_text_by_config(c, training_name_lines, middle, current_config['defaults'], current_config['training'])
 
 
 def print_date_and_place(c, current_config, middle, date, place):
-    draw_centered_text_by_config(c, [date, place], middle, current_config['defaults'], current_config['date_place'])
+    draw_text_by_config(c, [date, place], middle, current_config['defaults'], current_config['date_place'])
 
 
 def print_trainer_names(c, current_config, trainer_names, trainer_signatures):
@@ -187,6 +191,5 @@ def resolve_training_type_text(training_type, training_type_string):
 
 def print_certificate_number(c, number, current_config, middle):
     certificate_number_config = current_config['certificate_number']
-    mid_text_x = middle if 'line_x' not in certificate_number_config else int(certificate_number_config['line_x'])
     defaults = current_config['defaults']
-    draw_centered_text_by_config(c, ['№ ' + str(number)], mid_text_x, defaults, certificate_number_config)
+    draw_text_by_config(c, ['№ ' + str(number)], middle, defaults, certificate_number_config)
