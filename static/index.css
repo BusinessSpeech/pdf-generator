@@ -90,3 +90,33 @@
 .training-type-option {
     margin: 5px 0;
 }
+
+.training-type-select {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 295px;
+    transition: width 0.5s ease-in-out;
+}
+
+.training-type-input {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 295px;
+    transition: width 0.5s ease-in-out;
+}
+
+.training-type-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+.training-type-input:placeholder-shown {
+    width: 95px;
+}
+
+.training-type-input:not(:placeholder-shown) + .training-type-select {
+    width: 95px;
+    background-color: #ddd;
+    color: #aaa;
+}
