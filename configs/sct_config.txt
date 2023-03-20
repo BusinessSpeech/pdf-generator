@@ -10,38 +10,38 @@ image_name=sct_background.png
 
 [supplementary]
 font_size=12
-line_y=443
-line_x=84
+x=84
+y=443
 line_height=67
 
 [trainee]
 font_size=24
-line_x=83
-line_y=439
+x=83
+y=439
 color_r=55
 color_g=48
 color_b=111
 
 [training]
 font_size=24
-line_x=83
-line_y=370
+x=83
+y=370
 line_height=30
 
 [date_place]
-line_x=84
-line_y=93
+x=84
+y=93
 line_height=12
 
 [trainers]
 text_single=Бизнес-тренер:
 text_plural=Бизнес-тренеры:
-line_x=84
-line_y=278
+x=84
+y=278
 line_height=32
 signature_line_gap=8
 signature_line_length=102
 
 [certificate_number]
-line_y=100
+y=100
 font_size=8

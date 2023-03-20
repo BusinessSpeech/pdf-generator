@@ -13,37 +13,37 @@ color_r=180
 color_g=177
 color_b=22
 font_size=16
-line_y=482
+y=482
 line_height=93
 
 [trainee]
 font_size=30
-line_y=478
+y=478
 
 [training]
 font_size=28
-line_y=366
+y=366
 line_height=24
 
 [date_place]
-line_y=85
+y=85
 line_height=12
 
 [trainers]
 text_single=Тренер:
 text_plural=Тренеры:
-line_x=135
-line_y=267
+x=135
+y=267
 line_height=31
 signature_line_gap=8
 signature_line_length=102
 
 [site]
-line_y=46
+y=46
 
 [certificate_number]
-line_x=526
-line_y=802
+x=526
+y=802
 font_size=8
 color_r=226
 color_g=223

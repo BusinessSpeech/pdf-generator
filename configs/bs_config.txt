@@ -10,7 +10,7 @@ image_name=bs_background.png
 
 [supplementary]
 font_size=14
-line_y=535
+y=535
 line_height=65
 color_r=0
 color_g=177
@@ -18,22 +18,22 @@ color_b=235
 
 [trainee]
 font_size=24
-line_y=531
+y=531
 
 [training]
 font_size=18
-line_y=423
+y=423
 line_height=30
 
 [date_place]
-line_y=126
+y=126
 line_height=13
 
 [trainers]
 text_single=Бизнес-тренер:
 text_plural=Бизнес-тренеры:
-line_x=135
-line_y=255
+x=135
+y=255
 line_height=31
 signature_line_gap=8
 signature_line_length=102
@@ -44,5 +44,5 @@ left_x=92
 right_x=479
 
 [certificate_number]
-line_y=100
+y=100
 font_size=8

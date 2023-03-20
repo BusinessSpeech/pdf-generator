@@ -90,8 +90,8 @@ def get_or_default(key, specific_config, default_config):
 def draw_text_by_config(c, lines: List[str], middle, defaults, text_config):
     set_font(c, text_config, defaults)
     lines_count = len(lines)
-    y = int(text_config['line_y'])
-    x = int(text_config['line_x']) if 'line_x' in text_config else None
+    y = int(text_config['y'])
+    x = int(text_config['x']) if 'x' in text_config else None
     lh = int(text_config['line_height']) if 'line_height' in text_config else 0
     for i, line in enumerate(lines):
         text_y = y + lh / 2 * (lines_count - 1) - lh * i
@@ -147,7 +147,7 @@ def print_trainer_names(c, current_config, trainer_names, trainer_signatures):
     trainer_text = trainers_config['text_single'] \
         if len(trainer_names_list) == 1 else trainers_config['text_plural']
     do_print_trainer_names(
-        c, int(trainers_config['line_x']), int(trainers_config['line_y']), int(trainers_config['line_height']),
+        c, int(trainers_config['x']), int(trainers_config['y']), int(trainers_config['line_height']),
         int(trainers_config['signature_line_gap']), int(trainers_config['signature_line_length']),
         trainer_names_list, trainer_signatures, trainer_text
     )
