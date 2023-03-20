@@ -26,6 +26,7 @@ color_b=111
 font_size=24
 x=83
 y=370
+align_top=True
 line_height=30
 
 [date_place]

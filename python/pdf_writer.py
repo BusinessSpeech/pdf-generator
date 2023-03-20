@@ -93,12 +93,17 @@ def draw_text_by_config(c, lines: List[str], middle, defaults, text_config):
     y = int(text_config['y'])
     x = int(text_config['x']) if 'x' in text_config else None
     lh = int(text_config['line_height']) if 'line_height' in text_config else 0
+    first_line_y = y if 'align_top' in text_config else centered_text_first_line_y(y, lh, lines_count)
     for i, line in enumerate(lines):
-        text_y = y + lh / 2 * (lines_count - 1) - lh * i
+        text_y = first_line_y - lh * i
         if x is None:
             c.drawCentredString(middle, text_y, line)
         else:
             c.drawString(x, text_y, line)
+
+
+def centered_text_first_line_y(y, line_height, lines_count):
+    return y + line_height / 2 * (lines_count - 1)
 
 
 def set_font(c, text_config, defaults):
