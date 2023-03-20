@@ -23,7 +23,7 @@ y=531
 [training]
 font_size=18
 y=423
-line_height=30
+line_height=26
 
 [date_place]
 y=126

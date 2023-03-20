@@ -6,7 +6,7 @@ color_g=0
 color_b=0
 
 [background]
-image_name=sales_bg.png
+image_name=sales_background.png
 
 [supplementary]
 color_r=180
@@ -19,11 +19,17 @@ line_height=93
 [trainee]
 font_size=30
 y=478
+color_r=53
+color_g=39
+color_b=36
 
 [training]
 font_size=28
 y=366
-line_height=24
+line_height=26
+color_r=53
+color_g=39
+color_b=36
 
 [date_place]
 y=85
