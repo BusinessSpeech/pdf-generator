@@ -31,7 +31,7 @@ line_height=30
 
 [date_place]
 x=84
-y=93
+y=87
 line_height=12
 
 [trainers]
@@ -44,5 +44,6 @@ signature_line_gap=8
 signature_line_length=102
 
 [certificate_number]
-y=100
+y=93
+x=500
 font_size=8
