@@ -33,8 +33,8 @@ line_height=13
 text_single=Бизнес-тренер:
 text_plural=Бизнес-тренеры:
 x=135
-y=255
-line_height=31
+y=240
+line_height=32
 signature_line_gap=8
 signature_line_length=102
 

@@ -151,8 +151,11 @@ def print_trainer_names(c, current_config, trainer_names, trainer_signatures):
     trainer_names_list = split_by_newlines(trainer_names)
     trainer_text = trainers_config['text_single'] \
         if len(trainer_names_list) == 1 else trainers_config['text_plural']
+    y = int(trainers_config['y'])
+    line_height = int(trainers_config['line_height'])
+    first_line_y = centered_text_first_line_y(y, line_height, len(trainer_names_list) + 1)
     do_print_trainer_names(
-        c, int(trainers_config['x']), int(trainers_config['y']), int(trainers_config['line_height']),
+        c, int(trainers_config['x']), first_line_y, line_height,
         int(trainers_config['signature_line_gap']), int(trainers_config['signature_line_length']),
         trainer_names_list, trainer_signatures, trainer_text
     )

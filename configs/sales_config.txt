@@ -30,11 +30,11 @@ y=85
 line_height=12
 
 [trainers]
-text_single=Тренер:
-text_plural=Тренеры:
+text_single=Бизнес-тренер:
+text_plural=Бизнес-тренеры:
 x=135
-y=267
-line_height=31
+y=222
+line_height=32
 signature_line_gap=8
 signature_line_length=102
 
