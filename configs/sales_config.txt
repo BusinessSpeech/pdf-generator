@@ -51,6 +51,3 @@ y=46
 x=526
 y=802
 font_size=8
-color_r=226
-color_g=223
-color_b=24
