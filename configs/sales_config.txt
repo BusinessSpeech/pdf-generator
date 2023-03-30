@@ -8,13 +8,20 @@ color_b=0
 [background]
 image_name=sales_background.png
 
-[supplementary]
+[supplementary_constant]
 color_r=180
 color_g=177
 color_b=22
 font_size=16
-y=482
-line_height=93
+y=526
+
+[supplementary_custom]
+color_r=180
+color_g=177
+color_b=22
+font_size=16
+y=436
+line_height=16
 
 [trainee]
 font_size=30
@@ -25,11 +32,12 @@ color_b=36
 
 [training]
 font_size=28
-y=366
+y=384
 line_height=26
 color_r=53
 color_g=39
 color_b=36
+align_top=True
 
 [date_place]
 y=85

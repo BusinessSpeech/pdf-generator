@@ -127,8 +127,12 @@ def draw_background(c, current_config, document_size):
 
 def print_supplementary_text(c, current_config, middle, prefix, training_type_text):
     draw_text_by_config(
-        c, [prefix, training_type_text], middle,
-        current_config['defaults'], current_config['supplementary']
+        c, [prefix], middle,
+        current_config['defaults'], current_config['supplementary_constant']
+    )
+    draw_text_by_config(
+        c, split_by_newlines(training_type_text), middle,
+        current_config['defaults'], current_config['supplementary_custom']
     )
 
 

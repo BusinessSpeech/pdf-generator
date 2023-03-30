@@ -109,6 +109,8 @@
     box-sizing: border-box;
     width: 295px;
     transition: width 0.5s ease-in-out;
+    height: 22px;
+    resize: vertical;
 }
 
 .training-type-wrapper {

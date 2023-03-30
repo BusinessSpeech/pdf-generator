@@ -8,10 +8,18 @@ color_b=0
 [background]
 image_name=bs_background.png
 
-[supplementary]
+[supplementary_constant]
 font_size=14
-y=535
-line_height=65
+y=568
+color_r=0
+color_g=177
+color_b=235
+
+[supplementary_custom]
+font_size=14
+y=502
+align_top=True
+line_height=16
 color_r=0
 color_g=177
 color_b=235
