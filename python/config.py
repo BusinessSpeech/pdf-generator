@@ -9,6 +9,9 @@ sales_config.read('configs/sales_config.txt')
 sct_config = ConfigParser()
 sct_config.read('configs/sct_config.txt')
 
+nn_config = ConfigParser()
+nn_config.read('configs/nn_config.txt')
+
 
 def select_config(template):
     if template == 'Business Speech':
@@ -17,4 +20,6 @@ def select_config(template):
         return sales_config
     elif template == 'SCT':
         return sct_config
+    elif template == 'NN':
+        return nn_config
     return None
