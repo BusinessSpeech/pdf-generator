@@ -86,6 +86,13 @@ def create_page(c, template, document_size, trainee_name, training_name, trainer
         print_supplementary_text(
             c, current_config, middle, 'подтверждает, что', training_type_text
         )
+    elif template == 'BS_Sales':
+        draw_text_by_config(
+            c, ['www.business-speech.ru', 'www.thesales.ru'], middle, current_config['defaults'], current_config['site']
+        )
+        print_supplementary_text(
+            c, current_config, middle, 'подтверждает, что', training_type_text
+        )
 
 
 def get_or_default(key, specific_config, default_config):
