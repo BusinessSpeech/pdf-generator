@@ -31,7 +31,7 @@ def generate():
     training_type = request.form['training_type']
     training_type_string = request.form['training_type_string']
     participants = request.form['participants']
-    signature_file_names = [f'sign{i}' for i in range(1, 4)]
+    signature_file_names = [f'sign{i}' for i in range(1, 5)]
     signatures = [
         make_transparent_pixels_white(io.BytesIO(request.files[name].read())) for name in signature_file_names if
         (name in request.files and request.files[name].filename != '')
