@@ -97,6 +97,11 @@ def create_page(c, template, document_size, trainee_name, training_name, trainer
         print_supplementary_text(
             c, current_config, middle, 'подтверждает, что', training_type_text
         )
+    elif template == 'Business Speech EN':
+        draw_quotes(c, current_config['quotes'], quotes_offset)
+        print_supplementary_text(
+            c, current_config, middle, 'this is to certify that', training_type_text
+        )
 
 
 def get_or_default(key, specific_config, default_config):

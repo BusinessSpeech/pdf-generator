@@ -18,6 +18,9 @@ bs_sales_config.read('configs/bs_sales_config.txt')
 sales_sct_config = ConfigParser()
 sales_sct_config.read('configs/sales_sct_config.txt')
 
+bs_en_config = ConfigParser()
+bs_en_config.read('configs/bs_eng_config.txt')
+
 
 def select_config(template):
     if template == 'Business Speech':
@@ -32,4 +35,6 @@ def select_config(template):
         return bs_sales_config
     elif template == 'Sales_SCT':
         return sales_sct_config
+    elif template == 'Business Speech EN':
+        return bs_en_config
     return None
