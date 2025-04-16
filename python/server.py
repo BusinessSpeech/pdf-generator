@@ -36,7 +36,7 @@ def generate():
         make_transparent_pixels_white(io.BytesIO(request.files[name].read())) for name in signature_file_names if
         (name in request.files and request.files[name].filename != '')
     ]
-    effective_training_type_text = resolve_training_type_text(training_type, training_type_string)
+    effective_training_type_text = resolve_training_type_text(template, training_type, training_type_string)
     first_certificate_number_string = request.form['number']
     first_certificate_number = \
         int(first_certificate_number_string) if first_certificate_number_string.strip() != '' else None

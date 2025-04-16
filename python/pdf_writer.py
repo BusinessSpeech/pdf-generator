@@ -221,9 +221,11 @@ def do_print_trainer_names(c, x, y, line_height, signature_line_gap, signature_l
         second_line_y -= line_height
 
 
-def resolve_training_type_text(training_type, training_type_string):
+def resolve_training_type_text(template, training_type, training_type_string):
     if training_type_string is not None and training_type_string != '':
         return training_type_string
+    if template == 'Business Speech EN':
+        return 'has successfully completed the course'
     return 'прошёл(-ла) тренинг' if training_type == 'training' else 'прошёл(-ла) мастер-класс'
 
 
